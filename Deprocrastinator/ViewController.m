@@ -25,6 +25,33 @@
     self.cellArray = [[NSMutableArray alloc] init];
 }
 
+- (IBAction)onEditButtonPressed:(UIBarButtonItem *)sender {
+
+    if ([sender.title  isEqual: @"Edit"]) {
+        sender.title = @"Done";
+        [self.tableView setEditing:YES animated:YES];
+    }
+    else {
+        sender.title = @"Edit";
+        [self.tableView setEditing:NO animated:YES];
+    }
+
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.cellArray removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadData];
+    } else {
+        NSLog(@"Unhandled editing style! %ld", (long)editingStyle);
+    }
+
+}
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
 
 - (IBAction)onAddButtonPressed:(id)sender {
 
