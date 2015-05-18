@@ -27,8 +27,12 @@
 
 
 - (IBAction)onAddButtonPressed:(id)sender {
-    [self.cellArray addObject:self.textField.text];
-    [self.tableView reloadData];
+
+    if (![self.textField.text  isEqual:@""]) {
+        [self.cellArray addObject:self.textField.text];
+        [self.tableView reloadData];
+    }
+
     [self.textField resignFirstResponder];
     self.textField.text = @""; //make sure to prevent empty cells!!!
 
@@ -45,14 +49,17 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     self.cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
+
     self.cell.textLabel.text = [NSString stringWithFormat:@"%@", [self.cellArray objectAtIndex:indexPath.row]];
+
+
+
     return self.cell;
 }
 
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    self.cell.tintColor = [UIColor greenColor];
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    [tableView cellForRowAtIndexPath:indexPath].textLabel.textColor = [UIColor greenColor];
 }
-
-
 
 @end
