@@ -8,12 +8,12 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+@interface ViewController () <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate>
 
 @property NSMutableArray *cellArray;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property UITableViewCell *cell;
+@property UITableViewCell *cell, *swipedRightCell;
 
 @end
 
@@ -30,12 +30,14 @@
     if ([sender.title  isEqual: @"Edit"]) {
         sender.title = @"Done";
         [self.tableView setEditing:YES animated:YES];
-    }
-    else {
+    } else {
         sender.title = @"Edit";
         [self.tableView setEditing:NO animated:YES];
     }
-
+}
+- (IBAction)swipedRight:(id)sender {
+    NSLog(@"Swipe returns object: %@", sender);
+    self.cell.textLabel.textColor = [UIColor redColor];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -46,7 +48,6 @@
     } else {
         NSLog(@"Unhandled editing style! %ld", (long)editingStyle);
     }
-
 }
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -66,6 +67,11 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if (![self.textField.text  isEqual:@""]) {
+        [self.cellArray addObject:self.textField.text];
+        self.textField.text = @"";
+        [self.tableView reloadData];
+    }
     [self.textField resignFirstResponder];
     return YES;
 }
@@ -76,11 +82,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     self.cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
-
     self.cell.textLabel.text = [NSString stringWithFormat:@"%@", [self.cellArray objectAtIndex:indexPath.row]];
-
-
-
     return self.cell;
 }
 
