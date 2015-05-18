@@ -13,6 +13,7 @@
 @property NSMutableArray *cellArray;
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property UITableViewCell *cell;
 
 @end
 
@@ -29,6 +30,8 @@
     [self.cellArray addObject:self.textField.text];
     [self.tableView reloadData];
     [self.textField resignFirstResponder];
+    self.textField.text = @""; //make sure to prevent empty cells!!!
+
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -41,10 +44,13 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
-    cell.textLabel.text = [NSString stringWithFormat:@"row %li", (long)indexPath.row];
-    return cell;
+    self.cell = [tableView dequeueReusableCellWithIdentifier:@"CellID"];
+    self.cell.textLabel.text = [NSString stringWithFormat:@"%@", [self.cellArray objectAtIndex:indexPath.row]];
+    return self.cell;
+}
 
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.cell.tintColor = [UIColor greenColor];
 }
 
 
