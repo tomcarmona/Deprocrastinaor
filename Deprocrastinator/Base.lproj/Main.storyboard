@@ -96,6 +96,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="swipeRightGesture" destination="iyY-oc-dgD" id="QfV-jE-tKY"/>
                         <outlet property="tableView" destination="QqM-VO-KLN" id="QwY-ws-NxP"/>
                         <outlet property="textField" destination="5dJ-h1-mRc" id="d4H-YL-o0V"/>
                     </connections>
